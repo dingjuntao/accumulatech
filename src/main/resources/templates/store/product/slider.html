@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('轮播图')"/>
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-product-slider" enctype="multipart/form-data" th:object="${storeProduct}">
+        <input name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="font-noraml">多文件上传</label>
+            <div class="file-loading">
+                <input id="fileinput-demo-1" type="file" name="sliderImage" multiple>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: bootstrap-fileinput-js" />
+<script type="text/javascript" th:inline="javascript">
+    var sliderImageStr = [[${sliderImageStr} != null ? ${sliderImageStr} : '']];
+    var prefix = ctx + "store/product"
+    $("#slider").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var formData = new FormData($("#form-product-slider")[0]);
+            $.ajax({
+                url : prefix + "/uploadSlider",
+                type : 'POST',
+                data : formData,
+                cache: false,
+                async: false,
+                processData : false,  //必须false才会避开jQuery对 formdata 的默认处理
+                contentType : false,  //必须false才会自动加上正确的Content-Type
+                success: function (data) {
+                    console.log("成功");
+                    $.operate.successCallback(data);
+                },
+                error: function (data) {
+                    console.log("失败");
+                }
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        var str = new Array();
+        for(var i=0;i<sliderImageStr.length;i++){
+            str.push(sliderImageStr[i]);
+        }
+        $("#fileinput-demo-1").fileinput({
+            'theme': 'explorer-fas',
+            'uploadUrl': '#',
+            showUpload: false,
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            maxFileSize: 1024,//单位为kb，如果为0表示不限制文件大小
+            minFileCount: 1,
+            maxFileCount: 10, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            initialPreview: str
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accumulatech.project.shopconfig.banner.mapper.HomeBannerMapper">
+    
+    <resultMap type="HomeBanner" id="HomeBannerResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="urlStr"    column="url_str"    />
+        <result property="uniappRouting"    column="uniapp_routing"    />
+        <result property="attachmentId"    column="attachment_id"    />
+        <result property="sort"    column="sort"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="isDel"    column="is_del"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectHomeBannerVo">
+        select id,title , url_str, uniapp_routing, attachment_id, sort, is_show, is_del, create_by, create_time, update_by, update_time from home_banner
+    </sql>
+
+    <select id="selectHomeBannerList" parameterType="HomeBanner" resultMap="HomeBannerResult">
+        <include refid="selectHomeBannerVo"/>
+        <where>
+            is_del = 0
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="urlStr != null  and urlStr != ''"> and url_str = #{urlStr}</if>
+            <if test="uniappRouting != null  and uniappRouting != ''"> and uniapp_routing = #{uniappRouting}</if>
+            <if test="attachmentId != null  and attachmentId != ''"> and attachment_id = #{attachmentId}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+        </where>
+        order by sort
+    </select>
+    
+    <select id="selectHomeBannerById" parameterType="String" resultMap="HomeBannerResult">
+        <include refid="selectHomeBannerVo"/>
+        where id = #{id} and is_del = 0
+    </select>
+        
+    <insert id="insertHomeBanner" parameterType="HomeBanner">
+        insert into home_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="urlStr != null  and urlStr != ''">url_str,</if>
+            <if test="uniappRouting != null  and uniappRouting != ''">uniapp_routing,</if>
+            <if test="attachmentId != null  and attachmentId != ''">attachment_id,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="isShow != null ">is_show,</if>
+            <if test="isDel != null ">is_del,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="urlStr != null  and urlStr != ''">#{urlStr},</if>
+            <if test="uniappRouting != null  and uniappRouting != ''">#{uniappRouting},</if>
+            <if test="attachmentId != null  and attachmentId != ''">#{attachmentId},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="isShow != null ">#{isShow},</if>
+            <if test="isDel != null ">#{isDel},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHomeBanner" parameterType="HomeBanner">
+        update home_banner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="urlStr != null  and urlStr != ''">url_str = #{urlStr},</if>
+            <if test="uniappRouting != null  and uniappRouting != ''">uniapp_routing = #{uniappRouting},</if>
+            <if test="attachmentId != null  and attachmentId != ''">attachment_id = #{attachmentId},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="isShow != null ">is_show = #{isShow},</if>
+            <if test="isDel != null ">is_del = #{isDel},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHomeBannerById" parameterType="String">
+        delete from home_banner where id = #{id}
+    </delete>
+
+    <delete id="deleteHomeBannerByIds" parameterType="String">
+        delete from home_banner where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

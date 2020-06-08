@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accumulatech.project.store.product.mapper.StoreProductMapper">
+    
+    <resultMap type="StoreProduct" id="StoreProductResult">
+        <result property="id"    column="id"    />
+        <result property="merId"    column="mer_id"    />
+        <result property="img"    column="img"    />
+        <result property="sliderImage"    column="slider_image"    />
+        <result property="storeName"    column="store_name"    />
+        <result property="storeInfo"    column="store_info"    />
+        <result property="keyword"    column="keyword"    />
+        <result property="barCode"    column="bar_code"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="price"    column="price"    />
+        <result property="vipPrice"    column="vip_price"    />
+        <result property="otPrice"    column="ot_price"    />
+        <result property="postage"    column="postage"    />
+        <result property="sort"    column="sort"    />
+        <result property="sales"    column="sales"    />
+        <result property="stock"    column="stock"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="isHot"    column="is_hot"    />
+        <result property="isBenefit"    column="is_benefit"    />
+        <result property="isBest"    column="is_best"    />
+        <result property="isNew"    column="is_new"    />
+        <result property="description"    column="description"    />
+        <result property="isPostage"    column="is_postage"    />
+        <result property="isDel"    column="is_del"    />
+        <result property="giveIntegral"    column="give_integral"    />
+        <result property="cost"    column="cost"    />
+        <result property="browse"    column="browse"    />
+        <result property="codePath"    column="code_path"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStoreProductVo">
+        select id, mer_id, img, slider_image, store_name, store_info, keyword, bar_code, category_id, price, vip_price, ot_price, postage, sort, sales, stock, is_show, is_hot, is_benefit, is_best, is_new, description, is_postage, is_del, give_integral, cost, browse, code_path, create_by, create_time, update_by, update_time from store_product
+    </sql>
+
+    <select id="selectStoreProductList" parameterType="StoreProduct" resultMap="StoreProductResult">
+        <include refid="selectStoreProductVo"/>
+        <where>
+            is_del = 0
+            <if test="merId != null "> and mer_id = #{merId}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="sliderImage != null  and sliderImage != ''"> and slider_image = #{sliderImage}</if>
+            <if test="storeName != null  and storeName != ''"> and store_name like concat('%', #{storeName}, '%')</if>
+            <if test="storeInfo != null  and storeInfo != ''"> and store_info = #{storeInfo}</if>
+            <if test="keyword != null  and keyword != ''"> and keyword = #{keyword}</if>
+            <if test="barCode != null  and barCode != ''"> and bar_code = #{barCode}</if>
+            <if test="categoryId != null  and categoryId != ''"> and category_id = #{categoryId}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="vipPrice != null "> and vip_price = #{vipPrice}</if>
+            <if test="otPrice != null "> and ot_price = #{otPrice}</if>
+            <if test="postage != null "> and postage = #{postage}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="sales != null "> and sales = #{sales}</if>
+            <if test="stock != null "> and stock = #{stock}</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+            <if test="isHot != null "> and is_hot = #{isHot}</if>
+            <if test="isBenefit != null "> and is_benefit = #{isBenefit}</if>
+            <if test="isBest != null "> and is_best = #{isBest}</if>
+            <if test="isNew != null "> and is_new = #{isNew}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="isPostage != null "> and is_postage = #{isPostage}</if>
+            <if test="giveIntegral != null "> and give_integral = #{giveIntegral}</if>
+            <if test="cost != null "> and cost = #{cost}</if>
+            <if test="browse != null "> and browse = #{browse}</if>
+            <if test="codePath != null  and codePath != ''"> and code_path = #{codePath}</if>
+        </where>
+        order by sort
+    </select>
+    
+    <select id="selectStoreProductById" parameterType="String" resultMap="StoreProductResult">
+        <include refid="selectStoreProductVo"/>
+        where id = #{id} and is_del = 0
+    </select>
+        
+    <insert id="insertStoreProduct" parameterType="StoreProduct">
+        insert into store_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="merId != null ">mer_id,</if>
+            <if test="img != null  and img != ''">img,</if>
+            <if test="sliderImage != null  and sliderImage != ''">slider_image,</if>
+            <if test="storeName != null  and storeName != ''">store_name,</if>
+            <if test="storeInfo != null  and storeInfo != ''">store_info,</if>
+            <if test="keyword != null  and keyword != ''">keyword,</if>
+            <if test="barCode != null  and barCode != ''">bar_code,</if>
+            <if test="categoryId != null  and categoryId != ''">category_id,</if>
+            <if test="price != null ">price,</if>
+            <if test="vipPrice != null ">vip_price,</if>
+            <if test="otPrice != null ">ot_price,</if>
+            <if test="postage != null ">postage,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="sales != null ">sales,</if>
+            <if test="stock != null ">stock,</if>
+            <if test="isShow != null ">is_show,</if>
+            <if test="isHot != null ">is_hot,</if>
+            <if test="isBenefit != null ">is_benefit,</if>
+            <if test="isBest != null ">is_best,</if>
+            <if test="isNew != null ">is_new,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="isPostage != null ">is_postage,</if>
+            <if test="isDel != null ">is_del,</if>
+            <if test="giveIntegral != null ">give_integral,</if>
+            <if test="cost != null ">cost,</if>
+            <if test="browse != null ">browse,</if>
+            <if test="codePath != null  and codePath != ''">code_path,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="merId != null ">#{merId},</if>
+            <if test="img != null  and img != ''">#{img},</if>
+            <if test="sliderImage != null  and sliderImage != ''">#{sliderImage},</if>
+            <if test="storeName != null  and storeName != ''">#{storeName},</if>
+            <if test="storeInfo != null  and storeInfo != ''">#{storeInfo},</if>
+            <if test="keyword != null  and keyword != ''">#{keyword},</if>
+            <if test="barCode != null  and barCode != ''">#{barCode},</if>
+            <if test="categoryId != null  and categoryId != ''">#{categoryId},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="vipPrice != null ">#{vipPrice},</if>
+            <if test="otPrice != null ">#{otPrice},</if>
+            <if test="postage != null ">#{postage},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="sales != null ">#{sales},</if>
+            <if test="stock != null ">#{stock},</if>
+            <if test="isShow != null ">#{isShow},</if>
+            <if test="isHot != null ">#{isHot},</if>
+            <if test="isBenefit != null ">#{isBenefit},</if>
+            <if test="isBest != null ">#{isBest},</if>
+            <if test="isNew != null ">#{isNew},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="isPostage != null ">#{isPostage},</if>
+            <if test="isDel != null ">#{isDel},</if>
+            <if test="giveIntegral != null ">#{giveIntegral},</if>
+            <if test="cost != null ">#{cost},</if>
+            <if test="browse != null ">#{browse},</if>
+            <if test="codePath != null  and codePath != ''">#{codePath},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStoreProduct" parameterType="StoreProduct">
+        update store_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="merId != null ">mer_id = #{merId},</if>
+            <if test="img != null  and img != ''">img = #{img},</if>
+            <if test="sliderImage != null  and sliderImage != ''">slider_image = #{sliderImage},</if>
+            <if test="storeName != null  and storeName != ''">store_name = #{storeName},</if>
+            <if test="storeInfo != null  and storeInfo != ''">store_info = #{storeInfo},</if>
+            <if test="keyword != null  and keyword != ''">keyword = #{keyword},</if>
+            <if test="barCode != null  and barCode != ''">bar_code = #{barCode},</if>
+            <if test="categoryId != null  and categoryId != ''">category_id = #{categoryId},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="vipPrice != null ">vip_price = #{vipPrice},</if>
+            <if test="otPrice != null ">ot_price = #{otPrice},</if>
+            <if test="postage != null ">postage = #{postage},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="sales != null ">sales = #{sales},</if>
+            <if test="stock != null ">stock = #{stock},</if>
+            <if test="isShow != null ">is_show = #{isShow},</if>
+            <if test="isHot != null ">is_hot = #{isHot},</if>
+            <if test="isBenefit != null ">is_benefit = #{isBenefit},</if>
+            <if test="isBest != null ">is_best = #{isBest},</if>
+            <if test="isNew != null ">is_new = #{isNew},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="isPostage != null ">is_postage = #{isPostage},</if>
+            <if test="isDel != null ">is_del = #{isDel},</if>
+            <if test="giveIntegral != null ">give_integral = #{giveIntegral},</if>
+            <if test="cost != null ">cost = #{cost},</if>
+            <if test="browse != null ">browse = #{browse},</if>
+            <if test="codePath != null  and codePath != ''">code_path = #{codePath},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="changeIsShow">
+        update store_product set is_show = #{isShow} where id = #{id}
+    </update>
+
+    <update id="deleteStoreProductById" parameterType="String">
+        update store_product set is_del = 1 where id = #{id}
+    </update>
+
+    <delete id="deleteStoreProductByIds" parameterType="String">
+        delete from store_product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accumulatech.project.system.attachment.mapper.SysAttachmentMapper">
+    
+    <resultMap type="SysAttachment" id="SysAttachmentResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="attDir"    column="att_dir"    />
+        <result property="sattDir"    column="satt_dir"    />
+        <result property="attSize"    column="att_size"    />
+        <result property="attType"    column="att_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSysAttachmentVo">
+        select id, name, att_dir, satt_dir, att_size, att_type, create_by, create_time, update_by, update_time from sys_attachment
+    </sql>
+
+    <select id="selectSysAttachmentList" parameterType="SysAttachment" resultMap="SysAttachmentResult">
+        <include refid="selectSysAttachmentVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="attDir != null  and attDir != ''"> and att_dir = #{attDir}</if>
+            <if test="sattDir != null  and sattDir != ''"> and satt_dir = #{sattDir}</if>
+            <if test="attSize != null  and attSize != ''"> and att_size = #{attSize}</if>
+            <if test="attType != null  and attType != ''"> and att_type = #{attType}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysAttachmentById" parameterType="String" resultMap="SysAttachmentResult">
+        <include refid="selectSysAttachmentVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectSysAttachmentByIds" resultMap="SysAttachmentResult">
+        <include refid="selectSysAttachmentVo"/>
+        where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertSysAttachment" parameterType="SysAttachment">
+        insert into sys_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="attDir != null  and attDir != ''">att_dir,</if>
+            <if test="sattDir != null  and sattDir != ''">satt_dir,</if>
+            <if test="attSize != null  and attSize != ''">att_size,</if>
+            <if test="attType != null  and attType != ''">att_type,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="attDir != null  and attDir != ''">#{attDir},</if>
+            <if test="sattDir != null  and sattDir != ''">#{sattDir},</if>
+            <if test="attSize != null  and attSize != ''">#{attSize},</if>
+            <if test="attType != null  and attType != ''">#{attType},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysAttachment" parameterType="SysAttachment">
+        update sys_attachment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="attDir != null  and attDir != ''">att_dir = #{attDir},</if>
+            <if test="sattDir != null  and sattDir != ''">satt_dir = #{sattDir},</if>
+            <if test="attSize != null  and attSize != ''">att_size = #{attSize},</if>
+            <if test="attType != null  and attType != ''">att_type = #{attType},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysAttachmentById" parameterType="String">
+        delete from sys_attachment where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAttachmentByIds" parameterType="String">
+        delete from sys_attachment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

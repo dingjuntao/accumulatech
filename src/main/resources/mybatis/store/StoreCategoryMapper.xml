@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accumulatech.project.store.category.mapper.StoreCategoryMapper">
+    
+    <resultMap type="StoreCategory" id="StoreCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="classifyName"    column="classify_name"    />
+        <result property="sort"    column="sort"    />
+        <result property="visible"    column="visible"    />
+        <result property="isDel"    column="is_del"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStoreCategoryVo">
+        select id, parent_id, classify_name, sort, visible, is_del, create_by, create_time, update_by, update_time from store_category
+    </sql>
+
+    <select id="selectStoreCategoryList" parameterType="StoreCategory" resultMap="StoreCategoryResult">
+        <include refid="selectStoreCategoryVo"/>
+        <where>
+            is_del = 0
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+            <if test="classifyName != null  and classifyName != ''"> and classify_name like concat('%', #{classifyName}, '%')</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="visible != null "> and visible = #{visible}</if>
+        </where>
+        order by parent_id, sort
+    </select>
+    
+    <select id="selectStoreCategoryById" parameterType="String" resultMap="StoreCategoryResult">
+        <include refid="selectStoreCategoryVo"/>
+        where id = #{id} and is_del = 0
+        order by parent_id, sort
+    </select>
+        
+    <insert id="insertStoreCategory" parameterType="StoreCategory">
+        insert into store_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="parentId != null  and parentId != ''">parent_id,</if>
+            <if test="classifyName != null  and classifyName != ''">classify_name,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="visible != null ">visible,</if>
+            <if test="isDel != null ">is_del,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="parentId != null  and parentId != ''">#{parentId},</if>
+            <if test="classifyName != null  and classifyName != ''">#{classifyName},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="visible != null ">#{visible},</if>
+            <if test="isDel != null ">#{isDel},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStoreCategory" parameterType="StoreCategory">
+        update store_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null  and parentId != ''">parent_id = #{parentId},</if>
+            <if test="classifyName != null  and classifyName != ''">classify_name = #{classifyName},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="visible != null ">visible = #{visible},</if>
+            <if test="isDel != null ">is_del = #{isDel},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteStoreCategoryById" parameterType="String">
+        update store_category set is_del = 1 where id = #{id}
+    </update>
+
+    <delete id="deleteStoreCategoryByIds" parameterType="String">
+        delete from store_category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
